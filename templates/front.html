@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<ul>
+{% for post in posts %}
+    <div class="blog_post">
+        <div class="blog-title">{{ post.title }}</div>
+        <pre class="blog-body">{{ post.text }}</pre>
+    </div>
+{% endfor %}
+</ul>
+<div><a href="/newpost">Make a New Post</a></div>
+{% endblock %}
