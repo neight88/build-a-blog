@@ -1,6 +1,4 @@
-import webapp2
-import jinja2
-import os
+import webapp2, jinja2, os
 from google.appengine.ext import db
 
 # set up jinja
@@ -24,6 +22,12 @@ class Post(db.Model):
     text = db.TextProperty(required = True)
     created = db.DateTimeProperty(auto_now_add = True)
 
+class redirectHandler(Handler):
+    def get(self):
+        self.redirect("/blog")
+    def post(self):
+        self.redirect("/blog")
+
 class MainPage(Handler):
     def render_front(self, title="", text="", error=""):
         posts = db.GqlQuery("SELECT * FROM Post ORDER BY created DESC LIMIT 5")
@@ -31,18 +35,6 @@ class MainPage(Handler):
 
     def get(self):
         self.render_front()
-
-    def post(self):
-        title = self.request.get("form_title")
-        text = self.request.get("form_text")
-        #art = self.request.get("art")
-        if title and blogText:
-            newPost = blog(title=title, text=text)
-            newPost.put()
-            self.redirect("/")
-        else:
-            error = "We need both a title and some text"
-            self.render_front(title, blogText, error)
 
 class postPage(Handler):
     def render_page(self, title="", text="", error=""):
@@ -57,18 +49,28 @@ class postPage(Handler):
         if title and text:
             newPost = Post(title=title, text=text)
             newPost.put()
-            self.redirect("/")
+            self.redirect("/blog/" + str(newPost.key().id()))
         else:
             error = "We need both a title and some text"
             self.render_page(title, text, error)
 
+
 class ViewPostHandler(Handler):
     def get(self, id):
         postID = Post.get_by_id(int(id))
+        if postID:
+            title = postID.title
+            text = postID.text
+            self.render("singlePost.html", title=title, text=text)
 
-        self.response.write((id,) + (postID,))
+#def get_posts(limit, offset):
+#
+#    posts = db.GqlQuery("SELECT * FROM Post ORDER BY created DESC LIMIT limit OFFSET ")
+
+
 
 app = webapp2.WSGIApplication([
+    ('/', redirectHandler),
     ('/blog', MainPage),
     ('/newpost', postPage),
     webapp2.Route('/blog/<id:\d+>', ViewPostHandler)

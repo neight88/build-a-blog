@@ -4,15 +4,34 @@
         <title>Some_Blog</title>
     </head>
     <style type="text/css">
+        * {
+            text-decoration: none;
+            font-family:sans-serif;
+            text-align: center;
+
+        }
         body {
             font-family: sans-serif;
-            width: 800px;
+            width: 50%;
+            font-size: medium;
+            text-align: center;
             margin: 0 auto;
             padding: 10px;
+            background-color: #dddcdc;
+            ;
+        }
+        header,
+        main,
+        footer {
+        	background-color: #FFF;
+
         }
 
         .error {
             color:red
+        }
+        h1 {
+            color:#429667;
         }
 
         label {
@@ -23,14 +42,15 @@
         input[type=text] {
             width: 400px;
             font-size: 20px;
-            padding: 2px
+            padding: 2px;
+            text-align: left;
         }
 
         textarea {
             width: 400px;
             height: 200px;
-            font-size: 17px
-            font-family: monospace;
+            font-size: 17px;
+            text-align: left;
         }
 
         input[type=submit] {
@@ -43,24 +63,50 @@
 
         .blog_post + .blog_post {
             margin-top: 20px;
+            text-align: left;
         }
 
         .blog-title {
             font-weight: bold;
             font-size: 20px;
+            text-align: left;
+            padding-bottom: 5px
         }
 
         .blog-body {
             margin: 0 auto;
             font-size: 17px;
+            text-align: left;
+            padding-top: 2px;
+            padding-left: 1.5em;
+        }
+        .button {
+            font: bold 24px Arial;
+            background-color: #EEEEEE;
+            color: #333333;
+            padding: 2px 6px 2px 6px;
+            border-top: 1px solid #CCCCCC;
+            border-right: 1px solid #333333;
+            border-bottom: 1px solid #333333;
+            border-left: 1px solid #CCCCCC;
+        }
+        a {
+        color: #086A87;
         }
     </style>
     <body>
-        <h1>
-            <a href="/blog">Some_Blog</a>
-        </h1>
+        <main>
+            <header>
+                <h1>
+                    <a href="/blog"><h1>Some_Blog</h1></a>
+                </h1>
+            </header>
 
-        {% block content %}
-        {% endblock %}
+            {% block content %}
+            {% endblock %}
+            <br/><br/><br/>
+
+
+        </main>
     </body>
 </html>

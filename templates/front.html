@@ -3,10 +3,10 @@
 <ul>
 {% for post in posts %}
     <div class="blog_post">
-        <div class="blog-title">{{ post.title }}</div>
+        <div class="blog-title"><a href="/blog/{{ post.key().id() }}">{{ post.title }}</a></div>
         <pre class="blog-body">{{ post.text }}</pre>
     </div>
 {% endfor %}
 </ul>
-<div><a href="/newpost">Make a New Post</a></div>
+<a href="/newpost"><button>Make a New Post</button></a>
 {% endblock %}
