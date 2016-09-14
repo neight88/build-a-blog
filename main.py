@@ -29,12 +29,26 @@ class redirectHandler(Handler):
         self.redirect("/blog")
 
 class MainPage(Handler):
-    def render_front(self, title="", text="", error=""):
-        posts = db.GqlQuery("SELECT * FROM Post ORDER BY created DESC LIMIT 5")
-        self.render("front.html", title=title, text=text, error=error, posts=posts)
+    def render_front(self, title="", text="", error="", page="1"):
+        #posts = db.GqlQuery("SELECT * FROM Post ORDER BY created DESC LIMIT 5")
+        page = int(page)
+        limit = 5
+        if page < 2:
+            offset = 0
+        else:
+            offset = (page - 1) * 5
+        posts = get_posts(limit, offset)
+        totalNumberOfPosts = posts.count(offset=offset, limit=limit)
+        if page < (totalNumberOfPosts / limit):
+            nextPage=(page + 1)
+        else:
+            nextPage = ""
+        self.render("front.html", title=title, text=text, error=error, posts=posts, page=page, nextPage=nextPage)
+         #page and page for parents)
 
     def get(self):
-        self.render_front()
+        page = self.request.get("page")
+        self.render_front(page=page)
 
 class postPage(Handler):
     def render_page(self, title="", text="", error=""):
@@ -63,10 +77,11 @@ class ViewPostHandler(Handler):
             text = postID.text
             self.render("singlePost.html", title=title, text=text)
 
-#def get_posts(limit, offset):
-#
-#    posts = db.GqlQuery("SELECT * FROM Post ORDER BY created DESC LIMIT limit OFFSET ")
-
+def get_posts(limit, offset):
+    limit = str(limit)
+    offset = str(offset)
+    posts = db.GqlQuery("SELECT * FROM Post ORDER BY created DESC LIMIT "+limit+" OFFSET " + offset)
+    return posts
 
 
 app = webapp2.WSGIApplication([

@@ -8,5 +8,12 @@
     </div>
 {% endfor %}
 </ul>
-<a href="/newpost"><button>Make a New Post</button></a>
+
+{% if nextPage.isdigit() %}
+    <div>
+        <a href="/blog?Page={{ nextPage }}">Next</a>
+    </div>
+{% endif %}
+<!-- if page < total posts / limit, then post the link to next
+if int(page) > 1 post the link to previous  -->
 {% endblock %}
